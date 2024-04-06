@@ -92,7 +92,7 @@ You can either use :
 
 You can see the demo in the file "work_automation.py". In this example, we make sure
 - Each task will be trigged if and only if the previous task sucess
-- Whenever a task faied, you got the email notification
+- Whenever a task faied, you got the email notification, you also got the notification when the task is relaunched.
 - The failed task will be relaunch maximum one time with time delay of 5 minutes
 
 
