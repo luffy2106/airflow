@@ -32,17 +32,18 @@ You can set up your own account by run this command in the terminal
 airflow db migrate
 
 airflow users create \
-    --username admin \
-    --firstname Peter \
-    --lastname Parker \
+    --username tkdang \
+    --firstname Trung Kien \
+    --lastname DANG \
     --role Admin \
-    --password your_password_here \
-    --email spiderman@superhero.org
+    --password 123456 \
+    --email tkdang@assystem.com
 
 airflow webserver --port 8080
 
 airflow scheduler
 ```
+
 
 
 ### Dynamic workflows
