@@ -50,11 +50,10 @@ airflow scheduler
 In Airflow, dynamic workflows refer to the ability to generate tasks dynamically during runtime based on certain conditions or parameters. This allows for more flexible and customizable workflow orchestration.
 
 #####  Scenario
+You can schedule tasks by based on internal trigger or external trigger.
+1. Internal trigger
 
-1. Updating model
-You can schedule tasks by based on internal trigger or external trigger. For example :
-- Internal trigger : You build a deep learning model but the data keep changing overtime, in this case, you can trigger the model retrained by airflow every month, to update the performance of the model.
-
+You build a deep learning model but the data keep changing overtime, in this case, you can trigger the model retrained by airflow every month, to update the performance of the model.
 
 
 2. External trigger 
