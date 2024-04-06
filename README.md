@@ -33,14 +33,20 @@ airflow db migrate
 
 airflow users create \
     --username tkdang \
-    --firstname Trung Kien \
+    --firstname TrungKien \
     --lastname DANG \
     --role Admin \
     --password 123456 \
     --email tkdang@assystem.com
+```
 
+Run the following command in the different terminal
+
+```
 airflow webserver --port 8080
+```
 
+```
 airflow scheduler
 ```
 
@@ -63,18 +69,41 @@ Alerting:
 
 You can effectively track the performance and health of your machine learning pipelines, enabling you to make informed decisions and quickly address any issues that may arise during execution.
 
-Example :
-if we want to build pipeline to preprocessing data like this :
-- Convert image to text
-- From text convert to huggingface data
 
-If we process a huge amount of images, there will be some cases where things goes wrong, and we will not actually know when your script goes wrong until you run and wait the result. Put try/catch greedly in this case does not help because you don't know how much data you will loss.
+For the illustration, we can use some random dataset online, should choose the data which is not complicated.
+Suppose that we have this DAG:
+- Task 1: Download data files from an FTP server using a shell script.
+- Task 2: Preprocess the data using Python scripts.
+- Task 3: Train a machine learning model using a Jupyter notebook or Python script.
+- Task 4: Generate reports based on the model predictions.
+
+The pipeline should run one per week, to make sure that we have updated model with updated data all the time. Each task will be excuted if and only if the preceeding task finish.
 
 In this case, Airflow UI can help you visualize which tasks goes wrong, and logging will help you track the error. Alerting will send you a notification when you are spending time to work on something else and come back to fix the issuse. Further more, since it's API, you can track your workflow anywhere any anytime.
 
 ##### Implementation
+1. If you don't use docker
+You can see the implementation in file "work_automation.py". Copy this file into DAG folder in airflow path that you installed(type "airflow info" to check)
 
-For the illustration, we will make a demo with by building pipeline to preprocessing data like in MS2-classification of E-cataloging
+
+Run the following command in the different terminal
+
+```
+airflow webserver --port 8080
+```
+
+```
+airflow scheduler
+```
+
+Find the corresponding DAG, you can track the state of running DAG here.
+
+2. If you use docker(recommend)
+
+Use docker help us seperate airflow config in each project, take a look at the tutorial here
+```
+https://airflow.apache.org/docs/apache-airflow/stable/tutorial/pipeline.html
+```
 
 
 

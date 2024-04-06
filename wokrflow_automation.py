@@ -5,7 +5,7 @@ import time
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,   
-    'start_date': datetime(2022, 1, 1),
+    'start_date': datetime(2024, 6, 4),
     'email_on_failure': True,
     'email_on_retry': True,
     'retries': 1,
