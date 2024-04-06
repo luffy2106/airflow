@@ -32,12 +32,12 @@ You can set up your own account by run this command in the terminal
 airflow db migrate
 
 airflow users create \
-    --username admin \
-    --firstname Peter \
-    --lastname Parker \
+    --username tkdang \
+    --firstname Trung Kien \
+    --lastname DANG \
     --role Admin \
-    --password your_password_here \
-    --email spiderman@superhero.org
+    --password 123456 \
+    --email tkdang@assystem.com
 
 airflow webserver --port 8080
 
@@ -45,55 +45,37 @@ airflow scheduler
 ```
 
 
-### Dynamic workflows
+### Monitering and alerting
 
-In Airflow, dynamic workflows refer to the ability to generate tasks dynamically during runtime based on certain conditions or parameters. This allows for more flexible and customizable workflow orchestration.
+Airflow enable you to have fine-grained control over how you monitor your MLops operations and how Airflow alerts you if something goes wrong.
 
-#####  Scenario
-You can schedule tasks by based on internal trigger or external trigger.
-1. Internal trigger
+Monitoring:
+- Airflow UI: Airflow provides a web-based user interface where you can monitor the status of your DAGs (Directed Acyclic Graphs), tasks, and overall workflow.
+- Logging: Utilize logging within your Python operators to log important information, warnings, and errors. You can check the logs to troubleshoot any issues that may arise during the workflow execution.
+- Integration with Monitoring Tools: Integrate Airflow with monitoring tools like Prometheus, Grafana, or DataDog for more advanced monitoring capabilities such as tracking performance metrics, resource utilization, and task statuses.
 
-You build a deep learning model but the data keep changing overtime, in this case, you can trigger the model retrained by airflow every month, to update the performance of the model.
+Alerting:
+- Email Alerts: Configure email alerts in Airflow to be notified when a task fails or when a DAG encounters an issue. You can set up SMTP settings in the Airflow configuration to send emails.
+- Slack Alerts: Integrate Airflow with Slack to receive real-time notifications and alerts directly in your Slack channels. This can help in quickly identifying and resolving any issues.
+- Custom Alerts: Use Airflow's on_failure_callback and on_retry_callback parameters in your DAG definition to trigger custom actions, such as sending alerts to external systems or services via APIs
 
+##### Scenario
 
-2. External trigger 
-Sometimes in a workflow, you may have dependencies between tasks in different DAGs. In such cases, you can use a task from an external DAG to trigger a task in the current DAG.
+You can effectively track the performance and health of your machine learning pipelines, enabling you to make informed decisions and quickly address any issues that may arise during execution.
 
-Suppose that you have 2 DAGS like this:
-- DAG 1: Download images -> Image processing -> Extract text from image  
-- DAG 2: Data transformation -> Data visualization -> train model 
+Example :
+if we want to build pipeline to preprocessing data like this :
+- Convert image to text
+- From text convert to huggingface data
 
+If we process a huge amount of images, there will be some cases where things goes wrong, and we will not actually know when your script goes wrong until you run and wait the result. Put try/catch greedly in this case does not help because you don't know how much data you will loss.
 
-We can see that that the data transformation in DAG 2 should only start after text extraction in DAG 1 has successfully completed. In this case, we can :
-- Ensures that the data transformation tasks do not start until the required data is available.
-- Maintains the separation of concerns by keeping data extraction and transformation logic in separate DAGs.
-
+In this case, Airflow UI can help you visualize which tasks goes wrong, and logging will help you track the error. Alerting will send you a notification when you are spending time to work on something else and come back to fix the issuse. Further more, since it's API, you can track your workflow anywhere any anytime.
 
 ##### Implementation
 
-For the illustration, we can use some random dataset online, should choose the data which is not complicated.
+For the illustration, we will make a demo with by building pipeline to preprocessing data like in MS2-classification of E-cataloging
 
-Context :
-Define tasks for each step in the workflow:
-- Task 1: Download data files from an FTP server using a shell script.
-- Task 2: Preprocess the data using Python scripts.
-- Task 3: Train a machine learning model using a Jupyter notebook or Python script.
-- Task 4: Generate reports based on the model predictions.
-
-
-The pipeline should run one per week, to make sure that we have updated model with updated data all the time. Each task will be excuted if and only if the preceeding task finish.
-
-
-You can either use :
-- If you have only one python file with many fucntions : use ">>" to connect function
-- If you have many python files, use Orchestration with BashOperator(BashOperator to execute shell commands/scripts at each step of the workflow)
-
-##### Solution
-
-You can see the demo in the file "work_automation.py". In this example, we make sure
-- Each task will be trigged if and only if the previous task sucess
-- Whenever a task faied, you got the email notification, you also got the notification when the task is relaunched.
-- The failed task will be relaunch maximum one time with time delay of 5 minutes
 
 
 
