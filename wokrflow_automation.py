@@ -4,10 +4,10 @@ from datetime import datetime, timedelta
 import time
 default_args = {
     'owner': 'airflow',
-    'depends_on_past': False,
+    'depends_on_past': False,   
     'start_date': datetime(2022, 1, 1),
-    'email_on_failure': False,
-    'email_on_retry': False,
+    'email_on_failure': True,
+    'email_on_retry': True,
     'retries': 1,
     'retry_delay': timedelta(minutes=5),
 }
@@ -78,6 +78,7 @@ preprocess_data_task = PythonOperator(
 train_model_task = PythonOperator(
     task_id='train_model',
     python_callable=train_model,
+    email="tkdang@assystem.com",
     dag=dag,
 )
 
