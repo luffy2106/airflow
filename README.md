@@ -21,3 +21,28 @@ Here are some key characteristics of DAGs in Apache Airflow:
 - Metadata: DAGs in Apache Airflow also store metadata related to tasks, such as task parameters, default arguments, owner information, and more. This metadata helps in managing and monitoring workflows effectively.
 
 Overall, DAGs play a crucial role in defining and visualizing complex workflows in Apache Airflow. By organizing tasks into a directed acyclic structure with explicit dependencies, DAGs enable users to create robust data pipelines and automate data processing tasks efficiently.
+
+
+### Installation
+
+Install Apache Airflow by this tutorial
+```
+https://airflow.apache.org/docs/apache-airflow/stable/start.html
+```
+
+You can set up your own account by run this command in the terminal 
+```
+airflow db migrate
+
+airflow users create \
+    --username tkdang \
+    --firstname Trung Kien \
+    --lastname DANG \
+    --role Admin \
+    --password 123456 \
+    --email tkdang@assystem.com
+
+airflow webserver --port 8080
+
+airflow scheduler
+```
