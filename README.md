@@ -169,3 +169,50 @@ This is just to show that we can use built-in lib of airflow to interact with ot
 Same as above. Take a look at the script extensibility.py. The example just to show that airflow provide built-in to interact to third party service with mininal code, in this case is AWS.
 
 
+### Scalability and fault tolerance
+
+Scalability in Apache Airflow refers to the ability of the system to handle increasing workloads by efficiently distributing tasks across multiple worker nodes. Airflow provides horizontal scalability through its distributed architecture, enabling users to scale out their workflow execution as needed.
+
+Key points related to scalability in Airflow include:
+- Executor Types: Airflow supports different executor types such as Celery, Dask, Kubernetes, and more, allowing users to choose an executor that best suits their scalability requirements.
+- Parallel Execution: Tasks within a DAG can be executed in parallel on multiple worker nodes, enabling faster processing of workflows.
+- Task Queues: Airflow uses task queues to distribute tasks among workers, ensuring efficient utilization of resources and optimal performance.
+- Cluster Configuration: Users can configure Airflow to run on a cluster of machines, allocating resources dynamically based on workload demands.
+
+Fault Tolerance:
+Fault tolerance in Apache Airflow refers to the system's ability to recover from failures or errors without impacting the overall execution of workflows. Airflow provides mechanisms to handle failures gracefully and ensure the reliability of workflow execution.
+
+Key aspects of fault tolerance in Airflow include:
+- Task Retries: Users can define the number of retries for each task in a DAG, enabling automatic retry of failed tasks to mitigate transient issues.
+- Retry Delay: Users can specify a delay between task retries, allowing time for potential issues to be resolved before retrying the task.
+- Deadlock Handling: Airflow detects and prevents deadlocks by monitoring task dependencies and resource availability, ensuring smooth workflow execution.
+- Task Resiliency: Airflow isolates tasks within separate processes, enhancing fault isolation and preventing failures in one task from affecting others.
+
+#####  Scenario
+
+###### Scalability
+Imagine you are part of a project E-cataloging. The tools has been experiencing a surge in traffic users, leading to an increase in the volume and complexity of data processing tasks. To handle this growth effectively, you have decided to leverage the scalability features of Apache Airflow.
+
+Context
+- Scenario: The tool used by thousands of people for doing cataloging
+- Challenge: The current data processing workflows, including calling model to extract data, classify section, extract logo and validate, are becoming bottlenecked due to the high workload.
+- Goal: Ensure that the data pipelines can scale out seamlessly to accommodate the increased users during the peak time without compromising performance or reliability.
+
+###### Fault Tolerance
+
+Suppose that you want to extract infor from CV but the answer is not your expectation. You can set up the Task Retries: Users can define the number of retries for the task of giving promt question in a DAG, enabling automatic retry of failed tasks to mitigate transient issues.
+
+##### Implementation
+
+###### Scalability 
+
+In this context we can use the ms2-classification model in E-cataloging but we need to create fake requests. 
+
+This implementation is quite complcated because we need to have knowledge about scalibilty such as Kurbenetes or Celery
+
+###### Fault Tolerance 
+
+Set up the threshold to re-ask question to LLM whenever it gave the unexpected answer.
+
+
+
