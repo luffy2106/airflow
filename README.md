@@ -106,5 +106,46 @@ https://airflow.apache.org/docs/apache-airflow/stable/tutorial/pipeline.html
 ```
 
 
+### Dependency management
 
+In practice, solving conflict of virtualenvironment sometimes complicated, becasue each framework require different dependency. Thanks to airflow, you can apply virtualenv created dynamically for each task
+
+you may need to apply dynamic virtual environments for tasks when:
+- Different tasks have conflicting dependencies that require specific package versions.
+- Tasks need to run in isolation with their own dependency environment.
+- You want to ensure reproducibility by encapsulating dependencies within each task.
+
+#####  Scenario
+Suppose that you have a function in a task using pytorch that require numpy==1.13, then you have another function to preprocess data in another task which requires numpy==1.10. In this case, we need to isolate the virtualenv of each task to avoid the conflict
+
+
+##### Implementation
+
+For the illustration, we will make a demo with simple tasks like this :
+
+Let's consider a scenario where two tasks in an Airflow DAG require different versions of the "requests" library. We can create separate virtual environments for each task to isolate their dependencies.
+- task_1,task_2,task_3,task_4 are defined as separate tasks within the same Airflow DAG.
+- Each task uses a different version of the requests library by specifying it in the requirements parameter.
+- By setting system_site_packages=False, we ensure that the tasks run in isolated virtual environments.
+
+This setup allows each task to execute with its specific version of the requests library, avoiding conflicts between dependencies.
+
+Take a look at test_dependency_management.py to see the implementation
+
+
+### Dynamic workflows
+
+In Airflow, dynamic workflows refer to the ability to generate tasks dynamically during runtime based on certain conditions or parameters. This allows for more flexible and customizable workflow orchestration.
+
+#####  Scenario
+You can schedule tasks based on external trigger. For example :
+- External trigger : You can define external triggers that determine whether a task should be executed based on the outcome of a previous task or an external condition. Such as when you have new annotation data coming, you can trigger to train model whenever we detect data dift in the current dataset, in this case the behaviour of the model should be updated.
+
+##### Implementation
+
+Take a look at file dinamic_workflows.py to see the implementation. In this implementation, we have 2 DAGS:
+- The first DAG download data, preprocess data, and detec data drift, this DAG run weekly
+- the second DAG take the data from the first DAG, train the model and generate the report, this DAG run if and only if the result of data drift task of the first DAG is True.
+
+In the UI of airflow, you need to manually activate the first DAG. 
 

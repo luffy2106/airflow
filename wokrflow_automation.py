@@ -2,6 +2,7 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
 import time
+from airflow.operators.python import PythonVirtualenvOperator
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,   
@@ -87,6 +88,11 @@ generate_reports_task = PythonOperator(
     python_callable=generate_reports,
     dag=dag,
 )
+
+
+
+
+
 
 # Setting up task dependencies
 download_data_task >> preprocess_data_task >> train_model_task >> generate_reports_task
