@@ -149,3 +149,23 @@ Take a look at file dinamic_workflows.py to see the implementation. In this impl
 
 In the UI of airflow, you need to manually activate the first DAG. 
 
+
+### Extensibility and integration
+- Apache Airflow provides its own REST API that allows users to interact with the Airflow system
+- Airflow provides a wide range of built-in operators that facilitate integration with different systems such as databases (MySQL, PostgreSQL), cloud services (AWS, GCP), messaging queues (Kafka, RabbitMQ), and more. These operators enable tasks to interact with external resources during workflow execution.
+- Hooks in Airflow serve as connectors to external systems by providing a uniform interface to interact with different services. By using hooks, users can easily integrate custom or third-party systems into their Airflow workflows without writing extensive code.
+
+##### Scenario
+This is just to show that we can use built-in lib of airflow to interact with other service
+- We import the necessary modules from Airflow, including DAG and AWSAthenaOperator.
+- Default arguments for the DAG are specified, such as the owner, start date, and retry settings.
+- A DAG named 'aws_athena_operator_example' is defined with a daily schedule interval.
+- A task (athena_task) is created using AWSAthenaOperator to run a SQL query on Amazon Athena.
+- The SQL query to be executed, database name, S3 output location for query results, and AWS connection ID are configured within the operator.
+- Task dependencies are set, with no downstream tasks in this simplified example.
+
+##### Implementation
+
+Same as above. Take a look at the script extensibility.py. The example just to show that airflow provide built-in to interact to third party service with mininal code, in this case is AWS.
+
+
