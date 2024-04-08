@@ -50,6 +50,56 @@ airflow webserver --port 8080
 airflow scheduler
 ```
 
+### Dynamic workflows
+
+In Airflow, dynamic workflows refer to the ability to generate tasks dynamically during runtime based on certain conditions or parameters. This allows for more flexible and customizable workflow orchestration.
+
+#####  Scenario
+You can schedule tasks by based on internal trigger or external trigger.
+1. Internal trigger
+
+You build a deep learning model but the data keep changing overtime, in this case, you can trigger the model retrained by airflow every month, to update the performance of the model.
+
+
+2. External trigger 
+Sometimes in a workflow, you may have dependencies between tasks in different DAGs. In such cases, you can use a task from an external DAG to trigger a task in the current DAG.
+
+Suppose that you have 2 DAGS like this:
+- DAG 1: Download images -> Image processing -> Extract text from image  
+- DAG 2: Data transformation -> Data visualization -> train model 
+
+
+We can see that that the data transformation in DAG 2 should only start after text extraction in DAG 1 has successfully completed. In this case, we can :
+- Ensures that the data transformation tasks do not start until the required data is available.
+- Maintains the separation of concerns by keeping data extraction and transformation logic in separate DAGs.
+
+
+##### Implementation
+
+For the illustration, we can use some random dataset online, should choose the data which is not complicated.
+
+Context :
+Define tasks for each step in the workflow:
+- Task 1: Download data files from an FTP server using a shell script.
+- Task 2: Preprocess the data using Python scripts.
+- Task 3: Train a machine learning model using a Jupyter notebook or Python script.
+- Task 4: Generate reports based on the model predictions.
+
+
+The pipeline should run one per week, to make sure that we have updated model with updated data all the time. Each task will be excuted if and only if the preceeding task finish.
+
+
+You can either use :
+- If you have only one python file with many fucntions : use ">>" to connect function
+- If you have many python files, use Orchestration with BashOperator(BashOperator to execute shell commands/scripts at each step of the workflow)
+
+##### Solution
+
+You can see the demo in the file "work_automation.py". In this example, we make sure
+- Each task will be trigged if and only if the previous task sucess
+- Whenever a task faied, you got the email notification, you also got the notification when the task is relaunched.
+- The failed task will be relaunch maximum one time with time delay of 5 minutes
+
 
 ### Monitering and alerting
 
@@ -214,5 +264,6 @@ This implementation is quite complcated because we need to have knowledge about 
 
 Set up the threshold to re-ask question to LLM whenever it gave the unexpected answer.
 
+Take a look at French_vocab_app folder to see the implementation.
 
 
