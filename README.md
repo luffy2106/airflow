@@ -264,6 +264,12 @@ This implementation is quite complcated because we need to have knowledge about 
 
 Set up the threshold to re-ask question to LLM whenever it gave the unexpected answer.
 
-Take a look at French_vocab_app folder to see the implementation.
+Take a look at French_vocab_app folder to see the implementation. In this example, I build French-English Flashcard. The input is the vocabularies that I saw in the movies and the output is the flashcards with
+- The front is French word and its example to illustrate how to use it
+- The back is English word and its translation of the example above.
+
+In this problem, I want the length of each example is not over 20 characaters. Airflow will help me repeately invoke the another response again whenever the condition about length is not satisfied. 
+
+We can track the performance of LLM by the UI based on the number of times LLM does not generate the response which qualified all the conditions.
 
 
